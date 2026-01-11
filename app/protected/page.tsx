@@ -1,10 +1,13 @@
+import { Suspense } from "react";
+import { unstable_noStore as noStore } from "next/cache";
 import Dashboard from "@/components/Dashboard";
 
-export default async function ProtectedPage() {
-  
+export default function ProtectedPage() {
+  noStore();
+
   return (
-    <>
-    <Dashboard />
-    </>
+    <Suspense fallback={<div>Cargando...</div>}>
+      <Dashboard />
+    </Suspense>
   );
 }
