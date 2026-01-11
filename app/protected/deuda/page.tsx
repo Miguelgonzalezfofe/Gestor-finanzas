@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 export default function PageGasto() {
   const [monto, setMonto] = useState("");
   const [nombre, setNombre] = useState("");
-  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
+  const [fecha, setFecha] = useState("");
 
   const router = useRouter();
   const supabase = createClient();
