@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import DashboardClient from "./DashboardClient";
+import { GastoService } from "@/lib/domain/gastos/gastos.service";
+import { IncomesService } from "@/lib/domain/Incomes/Incomes.service";
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -15,15 +17,8 @@ export default async function Dashboard() {
 
   const userId = userRecord?.id;
 
-  const { data: gastos } = await supabase
-    .from("gastos")
-    .select("*")
-    .eq("usuario_id", userId);
-
-  const { data: ingresos } = await supabase
-    .from("ingresos")
-    .select("*")
-    .eq("usuario_id", userId);
+  const gastos = await GastoService.getUserExpenses(userId)
+  const ingresos = await IncomesService.getUserIncomes(userId)
 
   const { data: deudas } = await supabase
     .from("deudas")
