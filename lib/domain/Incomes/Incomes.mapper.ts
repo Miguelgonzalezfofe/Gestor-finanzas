@@ -1,7 +1,7 @@
 import { IncomeDTO } from "./Incomes.dto";
 
 export class IncomesMapper {
-  static toDTO(row: any): IncomeDTO {
+  static toDTO(row: BaseTransactionDTO): IncomeDTO {
     return {
       id: row.id,
       usuarioId: row.usuario_id,
@@ -10,7 +10,7 @@ export class IncomesMapper {
       fecha: row.fecha ?? "",
     };
   }
-  static toDTOList(rows: any[]): IncomeDTO[] {
+  static toDTOList(rows: BaseTransactionDTO[]): IncomeDTO[] {
     return rows.map((row) => IncomesMapper.toDTO(row));
   }
 }

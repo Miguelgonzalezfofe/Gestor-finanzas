@@ -1,4 +1,4 @@
-export interface GastoDTO {
+export interface InvestmentDTO {
   id: string;
   usuarioId: string;
   nombre: string;

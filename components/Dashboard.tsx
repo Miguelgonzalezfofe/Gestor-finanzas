@@ -1,7 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import DashboardClient from "./DashboardClient";
-import { GastoService } from "@/lib/domain/gastos/gastos.service";
 import { IncomesService } from "@/lib/domain/Incomes/Incomes.service";
+import { ExpensesService } from "@/lib/domain/expenses/expenses.service";
+import { CreditsService } from "@/lib/domain/credits/gastos.service";
+import { InvestmentsService } from "@/lib/domain/investments/investments.service";
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -17,25 +19,18 @@ export default async function Dashboard() {
 
   const userId = userRecord?.id;
 
-  const gastos = await GastoService.getUserExpenses(userId)
-  const ingresos = await IncomesService.getUserIncomes(userId)
+  const expenses = await ExpensesService.getUserExpenses(userId)
+  const incomes = await IncomesService.getUserIncomes(userId)
+  const credits = await CreditsService.getUserCredits(userId)
+  const investments = await InvestmentsService.getUserInvestments(userId)
 
-  const { data: deudas } = await supabase
-    .from("deudas")
-    .select("*")
-    .eq("usuario_id", userId);
-
-  const { data: inversiones } = await supabase
-    .from("inversiones")
-    .select("*")
-    .eq("usuario_id", userId);
 
   return (
     <DashboardClient
-      gastos={gastos ?? []}
-      ingresos={ingresos ?? []}
-      deudas={deudas ?? []}
-      inversiones={inversiones ?? []}
+      expenses={expenses ?? []}
+      incomes={incomes ?? []}
+      credits={credits ?? []}
+      investments={investments ?? []}
     />
   );
 }

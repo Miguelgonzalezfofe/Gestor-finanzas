@@ -1,16 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 
-export class GastosRepository {
-  static async findByUserId(userId: string) {
+export class ExpensesRepository {
+  static async findByUserId(userId: string):Promise<BaseTransactionDTO[]> {
     const supabase = await createClient();
 
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("gastos")
       .select("*")
       .eq("usuario_id", userId);
-
-    if (error) throw new Error(error.message);
-
     return data ?? [];
   }
 }

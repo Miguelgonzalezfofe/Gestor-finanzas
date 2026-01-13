@@ -2,38 +2,42 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { CreditDTO } from "@/lib/domain/credits/credits.dto";
+import { ExpenseDTO } from "@/lib/domain/expenses/expenses.dto";
+import { IncomeDTO } from "@/lib/domain/Incomes/Incomes.dto";
+import { InvestmentDTO } from "@/lib/domain/investments/investments.dto";
 import { LineChart, Line, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 interface Props {
-  gastos: any[];
-  ingresos: any[];
-  deudas: any[];
-  inversiones: any[];
+  expenses: ExpenseDTO[];
+  incomes: IncomeDTO[];
+  credits: CreditDTO[];
+  investments: InvestmentDTO[];
 }
 
-export default function DashboardClient({ gastos, ingresos, deudas, inversiones }: Props) {
-  const totalGastos = gastos.reduce((acc, g) => acc + g.monto, 0);
-  const totalIngresos = ingresos.reduce((acc, g) => acc + g.monto, 0);
-  const totalDeudas = deudas.reduce((acc, g) => acc + g.monto, 0);
-  const totalInversiones = inversiones.reduce((acc, g) => acc + g.monto, 0);
+export default function DashboardClient({ expenses, incomes, credits, investments }: Props) {
+  const totalExpenses = expenses.reduce((acc, g) => acc + g.monto, 0);
+  const totalIncomes = incomes.reduce((acc, g) => acc + g.monto, 0);
+  const totalCredits = credits.reduce((acc, g) => acc + g.monto, 0);
+  const totalInvestments = investments.reduce((acc, g) => acc + g.monto, 0);
 
-  const balance = totalIngresos - totalGastos - totalDeudas;
+  const balance = totalIncomes - totalExpenses - totalCredits;
 
   // Distribución total para PieChart
   const distribution = [
-    { name: "Gastos", value: totalGastos },
-    { name: "Ingresos", value: totalIngresos },
-    { name: "Deudas", value: totalDeudas },
-    { name: "Inversiones", value: totalInversiones },
+    { name: "Gastos", value: totalExpenses },
+    { name: "Ingresos", value: totalIncomes },
+    { name: "Deudas", value: totalCredits },
+    { name: "Inversiones", value: totalInvestments },
   ];
 
   const colors = ["#ef4444", "#22c55e", "#f97316", "#3b82f6"];
 
   // Ejemplo simple de evolución mensual (deberías agrupar por mes)
   const monthlyFlow = [
-    { mes: "Ene", ingresos: totalIngresos, gastos: totalGastos },
-    { mes: "Feb", ingresos: totalIngresos * 0.9, gastos: totalGastos * 1.1 },
-    { mes: "Mar", ingresos: totalIngresos * 1.2, gastos: totalGastos * 0.9 },
+    { mes: "Ene", incomes: totalIncomes, expenses: totalExpenses },
+    { mes: "Feb", incomes: totalIncomes * 0.9, expenses: totalExpenses * 1.1 },
+    { mes: "Mar", incomes: totalIncomes * 1.2, expenses: totalExpenses * 0.9 },
   ];
 
   return (
@@ -52,10 +56,10 @@ export default function DashboardClient({ gastos, ingresos, deudas, inversiones 
 
       {/* Cards de totales */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <ResumenCard titulo="Ingresos" valor={totalIngresos} color="text-green-600" />
-        <ResumenCard titulo="Gastos" valor={totalGastos} color="text-red-600" />
-        <ResumenCard titulo="Deudas" valor={totalDeudas} color="text-orange-600" />
-        <ResumenCard titulo="Inversiones" valor={totalInversiones} color="text-blue-600" />
+        <ResumenCard titulo="Ingresos" valor={totalIncomes} color="text-green-600" />
+        <ResumenCard titulo="Gastos" valor={totalExpenses} color="text-red-600" />
+        <ResumenCard titulo="Deudas" valor={totalCredits} color="text-orange-600" />
+        <ResumenCard titulo="Inversiones" valor={totalInvestments} color="text-blue-600" />
       </div>
 
       {/* Gráficos */}
@@ -72,8 +76,8 @@ export default function DashboardClient({ gastos, ingresos, deudas, inversiones 
                 <XAxis dataKey="mes" />
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey="ingresos" stroke="#22c55e" strokeWidth={3} />
-                <Line type="monotone" dataKey="gastos" stroke="#ef4444" strokeWidth={3} />
+                <Line type="monotone" dataKey="incomes" stroke="#22c55e" strokeWidth={3} />
+                <Line type="monotone" dataKey="expenses" stroke="#ef4444" strokeWidth={3} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -101,28 +105,28 @@ export default function DashboardClient({ gastos, ingresos, deudas, inversiones 
       </div>
 
       {/* Tabs con detalle por categoría */}
-      <Tabs defaultValue="gastos">
+      <Tabs defaultValue="expenses">
         <TabsList>
-          <TabsTrigger value="gastos">Gastos</TabsTrigger>
-          <TabsTrigger value="ingresos">Ingresos</TabsTrigger>
-          <TabsTrigger value="deudas">Deudas</TabsTrigger>
-          <TabsTrigger value="inversiones">Inversiones</TabsTrigger>
+          <TabsTrigger value="expenses">Gastos</TabsTrigger>
+          <TabsTrigger value="incomes">Ingresos</TabsTrigger>
+          <TabsTrigger value="credits">Deudas</TabsTrigger>
+          <TabsTrigger value="investments">Inversiones</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="gastos">
-          <ListaDetalle datos={gastos} titulo="Gastos" />
+        <TabsContent value="expenses">
+          <ListaDetalle datos={expenses} titulo="Gastos" />
         </TabsContent>
 
-        <TabsContent value="ingresos">
-          <ListaDetalle datos={ingresos} titulo="Ingresos" />
+        <TabsContent value="incomes">
+          <ListaDetalle datos={incomes} titulo="Ingresos" />
         </TabsContent>
 
-        <TabsContent value="deudas">
-          <ListaDetalle datos={deudas} titulo="Deudas" />
+        <TabsContent value="credits">
+          <ListaDetalle datos={credits} titulo="Deudas" />
         </TabsContent>
 
-        <TabsContent value="inversiones">
-          <ListaDetalle datos={inversiones} titulo="Inversiones" />
+        <TabsContent value="investments">
+          <ListaDetalle datos={investments} titulo="Inversiones" />
         </TabsContent>
       </Tabs>
     </div>

@@ -1,4 +1,4 @@
-export interface GastoDTO {
+export interface ExpenseDTO {
   id: string;
   usuarioId: string;
   nombre: string;
