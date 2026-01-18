@@ -6,4 +6,8 @@ export class ExpensesService {
     const rows = await ExpensesRepository.findByUserId(userId);
     return ExpenseMapper.toDTOList(rows);
   }
+  static async SetInsert(data:any){
+    const rows = await ExpensesRepository.SendData(data)
+    
+  }
 }

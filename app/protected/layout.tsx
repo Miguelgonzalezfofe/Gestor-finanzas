@@ -1,14 +1,6 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/lib/utils";
-import Link from "next/link";
-import { Suspense } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
-import { FabActions } from "@/components/FabActions";
 
 export default function ProtectedLayout({
   children,
@@ -22,7 +14,6 @@ export default function ProtectedLayout({
         <Navbar />
         <div className="max-w-5xl p-5">
           {children}
-        <FabActions />
 
         </div>
 

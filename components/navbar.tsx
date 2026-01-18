@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { EnvVarWarning } from './env-var-warning'
 import { hasEnvVars } from '@/lib/utils'
 import { AuthButton } from './auth-button'
 
@@ -12,13 +11,9 @@ function Navbar() {
               <Link href={"/"}>Gestor Finanzas</Link>
               <Link href={"/protected"}>Resumen</Link>
             </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
               <Suspense>
                 <AuthButton />
               </Suspense>
-            )}
           </div>
         </nav>
   </>

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import DashboardClient from "./DashboardClient";
-import { IncomesService } from "@/lib/domain/Incomes/Incomes.service";
 import { ExpensesService } from "@/lib/domain/expenses/expenses.service";
+import { IncomesService } from "@/lib/domain/Incomes/Incomes.service";
 import { CreditsService } from "@/lib/domain/credits/gastos.service";
 import { InvestmentsService } from "@/lib/domain/investments/investments.service";
 
@@ -11,26 +11,20 @@ export default async function Dashboard() {
   const { data: claims } = await supabase.auth.getClaims();
   const sub = claims?.claims.sub;
 
-  const { data: userRecord } = await supabase
-    .from("usuarios")
-    .select("id")
-    .eq("usuarios_id", sub)
-    .maybeSingle();
-
-  const userId = userRecord?.id;
-
-  const expenses = await ExpensesService.getUserExpenses(userId)
-  const incomes = await IncomesService.getUserIncomes(userId)
-  const credits = await CreditsService.getUserCredits(userId)
-  const investments = await InvestmentsService.getUserInvestments(userId)
-
-
+  if(!sub) throw new Error("sin sub")
+    const { data: id } = await supabase.from("usuarios").select("id").eq("usuarios_id", sub).maybeSingle();
+    const expenses = await ExpensesService.getUserExpenses("")
+    const incomes = await IncomesService.getUserIncomes("")
+    const credits = await CreditsService.getUserCredits("")
+    const investments = await InvestmentsService.getUserInvestments("")
+    const totalExpenses = expenses.reduce((acc, x) => acc + x.monto, 0);
+    const totalIncomes = incomes.reduce((acc, x) => acc + x.monto, 0);
+    const totalCredits = credits.reduce((acc, x) => acc + x.monto, 0);
+    const totalInvestments = investments.reduce((acc, x) => acc + x.montoInvertido, 0);
+  
+    const balance = totalIncomes - totalExpenses - totalCredits;
+    const datos = {expenses,incomes,credits,investments,totalCredits, totalInvestments,totalIncomes,totalExpenses, balance}
   return (
-    <DashboardClient
-      expenses={expenses ?? []}
-      incomes={incomes ?? []}
-      credits={credits ?? []}
-      investments={investments ?? []}
-    />
+    <DashboardClient datos={datos} />
   );
 }

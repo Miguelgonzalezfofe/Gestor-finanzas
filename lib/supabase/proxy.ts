@@ -25,17 +25,17 @@ export async function updateSession(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
+            request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
 
   // Do not run code between createServerClient and
@@ -59,6 +59,38 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+
+  // const ua = request.headers.get("user-agent") || "";
+
+  // const isMobile =
+  //   /Android|iPhone|iPod|Opera Mini|IEMobile/i.test(ua) && !/iPad/i.test(ua);
+
+  // const isTablet = /iPad|Tablet|PlayBook|Silk/i.test(ua);
+  // const isDesktop = !isMobile && !isTablet;
+
+  // const url = request.nextUrl.clone();
+  // const path = url.pathname;
+
+  // // Evitar loops infinitos
+  // const alreadyInMobile = path.startsWith("/mobile");
+  // const alreadyInTablet = path.startsWith("/tablet");
+  // const alreadyInDesktop = path.startsWith("/desktop");
+
+  // if (isMobile && !alreadyInMobile) {
+  //   url.pathname = `/mobile${path}`;
+  //   return NextResponse.redirect(url);
+  // }
+
+  // if (isTablet && !alreadyInTablet) {
+  //   url.pathname = `/tablet${path}`;
+  //   return NextResponse.redirect(url);
+  // }
+
+  // if (isDesktop && !alreadyInDesktop) {
+  //   url.pathname = `/desktop${path}`;
+  //   return NextResponse.redirect(url);
+  // }
+
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
@@ -74,3 +106,7 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
+
+export const config = {
+  matcher: ["/:path*"],
+};
