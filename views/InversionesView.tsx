@@ -40,7 +40,7 @@ export const InversionesView = ({ initialData }: InversionesViewProps) => {
             <p className="text-muted-foreground text-xs font-bold uppercase tracking-widest mb-2">Inversión Inicial</p>
             <p className="text-3xl font-bold">${inversionTotal.toLocaleString()}</p>
             <div className="mt-4 p-2 bg-muted/50 rounded-xl">
-               <p className="text-[10px] text-muted-foreground italic">"El interés compuesto es la octava maravilla del mundo."</p>
+              <p className="text-[10px] text-muted-foreground italic">"El interés compuesto es la octava maravilla del mundo."</p>
             </div>
           </Card>
         </div>
