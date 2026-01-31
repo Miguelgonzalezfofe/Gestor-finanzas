@@ -1,44 +1,13 @@
 // src/core/transactions/transactions.repository.ts
 
-import { createClient } from "@/lib/supabase/server";
+import { createTransactions, getAll, getTypeTransactions } from "./actions";
 
 export class TransactionsRepository {
   static async findAll(userId: string) {
-    const supabase = await createClient();
-
-    const { data, error } = await supabase
-      .from("transactions")
-      .select(`
-        *,
-        categories (
-          name,
-          icon
-        )
-      `)
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
-
-    if (error) throw new Error(error.message);
-    return data || [];
+    return getAll(userId)
   }
   static async findByUserIdAndType(userId: string, type: 'ingreso' | 'gasto') {
-    const supabase = await createClient();
-
-    const { data, error } = await supabase
-      .from("transactions")
-      .select(`
-        *,
-        categories (
-          name,
-          icon
-        )
-      `)
-      .eq("user_id", userId)
-      .eq("type", type) // Filtramos por el tipo
-      .order("created_at", { ascending: false });
-
-    if (error) throw new Error(error.message);
-    return data || [];
+    return getTypeTransactions(userId,type)
   }
   static async create(data: {
     user_id: string;
@@ -48,25 +17,7 @@ export class TransactionsRepository {
     category_id?: string;
     payment_method?: string;
   },userId:string) {
-    const supabase = await createClient();
-    
-    const { data: insertedData, error } = await supabase
-      .from("transactions")
-      .insert([
-        {
-          user_id: userId,
-          amount: data.amount,
-          description: data.description,
-          type: data.type,
-          payment_method: data.payment_method || "Efectivo",
-          category_id: data.category_id
-        }
-      ])
-      .select()
-      .single();
-
-    if (error) throw new Error(error.message);
-    return insertedData;
+    return createTransactions(data,userId)
   }
   
 }

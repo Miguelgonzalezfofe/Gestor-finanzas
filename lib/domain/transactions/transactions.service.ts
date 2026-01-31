@@ -1,5 +1,4 @@
 // src/core/transactions/transactions.service.ts
-import { ReactJsxRuntime } from "next/dist/server/route-modules/app-page/vendored/rsc/entrypoints";
 import { TransactionsMapper } from "./transactions.mapper";
 import { TransactionsRepository } from "./transactions.repository";
 

@@ -1,9 +1,11 @@
 "use client"
 import { ThemeToggle } from '@/components/theme-toggle';
 import { NavItem } from '@/components/ui/Navtem';
+import { useExpensesStore } from '@/lib/domain/expenses/expenses.store';
+import { useUser } from '@/lib/domain/user/user.store';
+import { User } from 'lucide-react';
 
-import router from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 
@@ -17,10 +19,12 @@ interface LayoutProps {
   }
 }
 const DashboardLayout: React.FC<LayoutProps> = ({views}) => {
-  // Estado para manejar la navegación simple
   const [currentView, setCurrentView] = useState<keyof typeof views>('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+  const {user,getUser} = useUser()
+  const {expenses,uploadExpenses} = useExpensesStore()
+
+  useEffect(()=>{getUser(); uploadExpenses(user?.id!)},[])
   const renderContent = () => {
     switch (currentView) {
       case 'dashboard': return views.dashboard ;
@@ -36,9 +40,10 @@ const DashboardLayout: React.FC<LayoutProps> = ({views}) => {
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
     { id: 'ingresos', label: 'Ingresos', icon: '💰' },
     { id: 'gastos', label: 'Gastos', icon: '💸' },
-    { id: 'inversiones', label: 'Inversiones', icon: '📈' },
-    { id: 'deudas', label: 'Deudas', icon: '💳' },
+    // { id: 'inversiones', label: 'Inversiones', icon: '📈' },
+    // { id: 'deudas', label: 'Deudas', icon: '💳' },
   ];
+  if(!user) return null
 
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden font-sans">
@@ -52,8 +57,8 @@ const DashboardLayout: React.FC<LayoutProps> = ({views}) => {
           F
         </div>
         <h1 className="text-xl font-bold tracking-tight">FinanzasPro</h1>
-      </div>
       <ThemeToggle />
+      </div>
     </div>
     <nav className="flex-1 px-4 py-4 space-y-1">
       {navItems.map((item) => (
@@ -70,15 +75,15 @@ const DashboardLayout: React.FC<LayoutProps> = ({views}) => {
     <div className="p-4 border-t border-border">
       <div className="bg-muted/50 rounded-2xl p-4">
         <p className="text-[10px] text-muted-foreground font-bold uppercase mb-2 tracking-wider">
-          Usuario Premium
+          Usuario
         </p>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary">
-            JD
+            <User />
           </div>
           <div className="overflow-hidden">
-            <p className="text-sm font-bold truncate">John Doe</p>
-            <p className="text-[10px] text-muted-foreground truncate">john@ejemplo.com</p>
+            <p className="text-sm font-bold truncate">{user!.fullName}</p>
+            <p className="text-[10px] text-muted-foreground truncate">{user!.email}</p>
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 // src/lib/domain/investments/investments.repository.ts
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 
 export class InvestmentsRepository {
   static async findByUserId(userId: string) {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("investments")
       .select("*")
@@ -22,7 +22,7 @@ export class InvestmentsRepository {
     asset_type: string;
     icon?: string;
   },user_id: string) {
-    const supabase = await createClient();
+    const supabase = createClient();
 
     const { data: insertedData, error } = await supabase
       .from("investments")

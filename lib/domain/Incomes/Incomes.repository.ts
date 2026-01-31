@@ -1,8 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 
 export class IncomesRepository {
   static async findByUserId(userId: string):Promise<BaseTransactionDTO[]> {
-    const supabase = await createClient();
+    const supabase = createClient();
 
     const { data } = await supabase
       .from("ingresos")

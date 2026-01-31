@@ -1,9 +1,9 @@
 // src/lib/domain/debts/debts.repository.ts
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 
 export class DebtsRepository {
   static async findByUserId(userId: string) {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("debts")
       .select("*")
@@ -24,7 +24,7 @@ export class DebtsRepository {
     },
     user_id: string
   ) {
-    const supabase = await createClient();
+    const supabase = createClient();
 
     const { data: insertedData, error } = await supabase
       .from("debts")

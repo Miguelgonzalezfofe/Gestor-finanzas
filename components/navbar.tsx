@@ -9,7 +9,7 @@ function Navbar() {
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
               <Link href={"/"}>Gestor Finanzas</Link>
-              <Link href={"/protected"}>Resumen</Link>
+              <Link href={"/dashboard"}>Dashboard</Link>
             </div>
               <Suspense>
                 <AuthButton />

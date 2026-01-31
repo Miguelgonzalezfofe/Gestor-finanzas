@@ -1,10 +1,13 @@
+import { DebtDO } from "../debts/debts.dto";
+import { InvestmentDTO } from "../investments/investments.dto";
+import { TransactionDO } from "../transactions/transactions.dto";
+
 // src/lib/domain/dashboard/dashboard.service.ts
 export class DashboardService {
-  static calculateMetrics(transactions: any[], investments: any[], debts: any[]) {
+  static calculateMetrics(transactions: TransactionDO[], investments: InvestmentDTO[], debts: DebtDO[]) {
     const totalIngresos = transactions
       .filter(t => t.tipo === 'ingreso')
       .reduce((acc, curr) => acc + curr.monto, 0);
-
     const totalGastos = transactions
       .filter(t => t.tipo === 'gasto')
       .reduce((acc, curr) => acc + curr.monto, 0);
