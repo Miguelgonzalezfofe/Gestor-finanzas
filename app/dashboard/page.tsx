@@ -26,9 +26,6 @@ export default function Page() {
       upload(user.id)
     }
   },[user])
-  console.log("user",user)
-  console.log("transactions",transactions)
-
   if (!user || !transactions || !investments || !debts) {
     return (
     <div className="flex h-screen items-center justify-center bg-background">

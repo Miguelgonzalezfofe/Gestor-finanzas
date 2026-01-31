@@ -8,7 +8,7 @@ import { TransactionDO } from "@/lib/domain/transactions/transactions.dto"
 interface GastosViewProps {
   initialData: TransactionDO[];
 }
-export const GastosView = async ({initialData}:GastosViewProps) => {  
+export const GastosView = ({initialData}:GastosViewProps) => {  
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
